@@ -1,18 +1,16 @@
 import _ from 'lodash';
-import React, {Component} from 'react';
-import {AccessibilityInfo, PanResponder, Animated, View, Text, Image} from 'react-native';
 import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+import {AccessibilityInfo, Animated, Image, PanResponder, Text, TouchableOpacity, View} from 'react-native';
 import XDate from 'xdate';
-import {CALENDAR_KNOB} from '../testIDs';
-
+import Calendar from '../calendar';
+import CalendarList from '../calendar-list';
 import dateutils from '../dateutils';
 import {parseDate} from '../interface';
-import styleConstructor, {HEADER_HEIGHT} from './style';
-import CalendarList from '../calendar-list';
-import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
-import WeekCalendar from './weekCalendar';
+import styleConstructor, {HEADER_HEIGHT} from './style';
 import Week from './week';
+import WeekCalendar from './weekCalendar';
 
 const commons = require('./commons');
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
@@ -464,12 +462,17 @@ class ExpandableCalendar extends Component {
     );
   }
 
+  toggleOpen() {
+    const newValue = this._height === this.closedHeight ? this.openHeight : this.closedHeight;
+    this.bounceToPosition(newValue);
+  }
+
   renderKnob() {
     // TODO: turn to TouchableOpacity with onPress that closes it
     return (
-      <View style={this.style.knobContainer} pointerEvents={'none'} testID={`${this.props.testID}-knob`}>
-        <View style={this.style.knob} testID={CALENDAR_KNOB} />
-      </View>
+      <TouchableOpacity activeOpacity={1} style={this.style.knobContainer} onPress={this.toggleOpen.bind(this)}>
+        <View style={this.style.knob} />
+      </TouchableOpacity>
     );
   }
 

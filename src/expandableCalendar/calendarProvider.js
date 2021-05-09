@@ -145,14 +145,21 @@ class CalendarProvider extends Component {
   }
 
   onTodayPress = () => {
+    if (this.props.onTodayPress) {
+      this.props.onTodayPress();
+      return;
+    }
     const today = XDate().toString('yyyy-MM-dd');
     this.setDate(today, UPDATE_SOURCES.TODAY_PRESS);
   };
 
   renderTodayButton() {
+    if (this.props.renderTodayButton) {
+      return this.props.renderTodayButton();
+    }
     const {disabled, opacity, buttonY, buttonIcon} = this.state;
     const todayString = XDate.locales[XDate.defaultLocale].today || commons.todayString;
-    const today = todayString.charAt(0).toUpperCase() + todayString.slice(1);
+    const today = this.props.todayText || todayString.charAt(0).toUpperCase() + todayString.slice(1);
 
     return (
       <Animated.View style={[this.style.todayButtonContainer, {transform: [{translateY: buttonY}]}]}>
