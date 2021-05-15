@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import XDate from 'xdate';
 import React, {Component} from 'react';
-import {FlatList, Platform, Dimensions, View} from 'react-native';
-import {extractComponentProps} from '../component-updater';
-import {xdateToData, parseDate} from '../interface';
-import dateutils from '../dateutils';
-import {STATIC_HEADER} from '../testIDs';
-import styleConstructor from './style';
+import {Dimensions, FlatList, Platform, View} from 'react-native';
+import XDate from 'xdate';
 import Calendar from '../calendar';
-import CalendarListItem from './item';
 import CalendarHeader from '../calendar/header/index';
+import {extractComponentProps} from '../component-updater';
+import dateutils from '../dateutils';
+import {parseDate, xdateToData} from '../interface';
+import {STATIC_HEADER} from '../testIDs';
+import CalendarListItem from './item';
+import styleConstructor from './style';
 
 const {width} = Dimensions.get('window');
 
@@ -193,16 +193,15 @@ class CalendarList extends Component {
     }
 
     this.setState({currentMonth: day.clone()}, () => {
-        this.scrollToMonth(this.state.currentMonth);
+      this.scrollToMonth(this.state.currentMonth);
 
-        if (!doNotTriggerListeners) {
-          const currMont = this.state.currentMonth.clone();
+      if (!doNotTriggerListeners) {
+        const currMont = this.state.currentMonth.clone();
 
-          _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
-          _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
-        }
+        _.invoke(this.props, 'onMonthChange', xdateToData(currMont));
+        _.invoke(this.props, 'onVisibleMonthsChange', [xdateToData(currMont)]);
       }
-    );
+    });
   }
 
   onViewableItemsChanged = ({viewableItems}) => {

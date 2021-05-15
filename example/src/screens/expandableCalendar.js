@@ -189,7 +189,7 @@ export default class ExpandableCalendarScreen extends Component {
           <ExpandableCalendar
             testID={testIDs.expandableCalendar.CONTAINER}
             // horizontal={false}
-            // hideArrows
+            hideArrows
             // disablePan
             // hideKnob
             // initialPosition={ExpandableCalendar.positions.OPEN}
@@ -197,6 +197,7 @@ export default class ExpandableCalendarScreen extends Component {
             // headerStyle={styles.calendar} // for horizontal only
             // disableWeekScroll
             // theme={this.getTheme()}
+            renderHeader={() => <View style={{backgroundColor: 'green', height: 30, width: '100%', flex: 1}}></View>}
             disableAllTouchEventsForDisabledDays
             firstDay={1}
             markedDates={this.getMarkedDates()} // {'2019-06-01': {marked: true}, '2019-06-02': {marked: true}, '2019-06-03': {marked: true}};

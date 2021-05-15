@@ -53,8 +53,11 @@ class CalendarHeader extends Component {
     webAriaLevel: 1
   };
 
+  headerComponent;
+
   constructor(props) {
     super(props);
+    this.headerComponent = props.headerComponent;
 
     this.style = styleConstructor(props.theme);
   }
@@ -101,7 +104,7 @@ class CalendarHeader extends Component {
     if (typeof onPressArrowRight === 'function') {
       return onPressArrowRight(this.addMonth, month);
     }
-    
+
     return this.addMonth();
   };
 
@@ -226,7 +229,7 @@ class CalendarHeader extends Component {
         <View style={this.style.header}>
           {this.renderArrow('left')}
           <View style={this.style.headerContainer}>
-            {this.renderHeader()}
+            {this.props.headerComponent ? <this.props.headerComponent month={this.props.month} /> : this.renderHeader()}
             {this.renderIndicator()}
           </View>
           {this.renderArrow('right')}
