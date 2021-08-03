@@ -84,6 +84,7 @@ export default class AgendaView extends Component {
 
   componentDidMount() {
     this._isMounted = true;
+    if (this.props.onReady) this.props.onReady(this);
     this.loadReservations(this.props);
   }
 
@@ -200,7 +201,10 @@ export default class AgendaView extends Component {
     }
 
     const key = toMarkingFormat(selectedDay);
-    return {...markedDates, [key]: {...(markedDates[key] || {}), ...{selected: true}}};
+    return {
+      ...markedDates,
+      [key]: {...(markedDates[key] || {}), ...{selected: true}}
+    };
   });
 
   onScrollPadLayout = () => {
@@ -329,11 +333,12 @@ export default class AgendaView extends Component {
 
     if (!hideKnob) {
       const knobView = renderKnob ? renderKnob() : <View style={this.style.knob} />;
-      knob = !this.state.calendarScrollable || showClosingKnob ? (
-        <View style={this.style.knobContainer}>
-          <View ref={c => (this.knob = c)}>{knobView}</View>
-        </View>
-      ) : null;
+      knob =
+        !this.state.calendarScrollable || showClosingKnob ? (
+          <View style={this.style.knobContainer}>
+            <View ref={c => (this.knob = c)}>{knobView}</View>
+          </View>
+        ) : null;
     }
     return knob;
   }
@@ -398,7 +403,8 @@ export default class AgendaView extends Component {
       weekdaysStyle.push({height: HEADER_HEIGHT});
     }
 
-    const openCalendarScrollPadPosition = !hideKnob && this.state.calendarScrollable && this.props.showClosingKnob ? agendaHeight + HEADER_HEIGHT : 0;
+    const openCalendarScrollPadPosition =
+      !hideKnob && this.state.calendarScrollable && this.props.showClosingKnob ? agendaHeight + HEADER_HEIGHT : 0;
     const shouldAllowDragging = !hideKnob && !this.state.calendarScrollable;
     const scrollPadPosition = (shouldAllowDragging ? HEADER_HEIGHT : openCalendarScrollPadPosition) - KNOB_HEIGHT;
     const scrollPadStyle = {
@@ -411,7 +417,9 @@ export default class AgendaView extends Component {
 
     return (
       <View testID={testID} onLayout={this.onLayout} style={[style, this.style.container]}>
-        <View style={this.style.reservations}>{this.renderReservations()}</View>
+        <View style={this.style.reservations}>
+          {this.props.children ? this.props.children : this.renderReservations()}
+        </View>
         <Animated.View style={headerStyle}>
           <Animated.View style={[this.style.animatedContainer, {transform: [{translateY: contentTranslate}]}]}>
             {this.renderCalendarList()}
