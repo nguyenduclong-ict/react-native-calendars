@@ -16,7 +16,7 @@ import Week from '../week';
 import Presenter from './presenter';
 
 const commons = require('../commons');
-const NUMBER_OF_PAGES = 2; // must be a positive number
+const NUMBER_OF_PAGES = 100; // must be a positive number
 const applyAndroidRtlFix = commons.isAndroid && commons.isRTL;
 
 /**
