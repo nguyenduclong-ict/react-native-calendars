@@ -56,14 +56,14 @@ export type CalendarListProps = CalendarProps & {
   onEndReached?: () => void;
 };
 
-type XDateAndBump = XDate & {propBump?: number} ;
+type XDateAndBump = XDate & {propBump?: number};
 
 type CalendarListState = {
   rows: Array<XDateAndBump>;
   texts: Array<string>;
   openDate: XDate;
   currentMonth: XDate;
-}
+};
 
 /**
  * @description: Calendar List component for both vertical and horizontal calendars
@@ -180,7 +180,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
 
     for (let i = 0; i < rowClone.length; i++) {
       let val: XDate | string = prevState.texts[i];
-        // @ts-ignore
+      // @ts-ignore
       if (rowClone[i].getTime) {
         val = rowClone[i].clone();
         // @ts-ignore
@@ -243,6 +243,7 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   };
 
   updateMonth(day: XDate, doNotTriggerListeners = false) {
+    if (!this.state.currentMonth) return;
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
