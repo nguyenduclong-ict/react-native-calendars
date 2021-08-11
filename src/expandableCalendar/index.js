@@ -505,7 +505,6 @@ class ExpandableCalendar extends Component {
               onPressArrowRight={this.onPressArrowRight}
               hideExtraDays={!horizontal}
               renderArrow={this.renderArrow}
-              staticHeader={false}
             />
             {horizontal && this.renderWeekCalendar()}
             {!hideKnob && this.renderKnob()}
