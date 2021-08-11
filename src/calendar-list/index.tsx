@@ -261,41 +261,45 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   }
 
   onViewableItemsChanged = ({viewableItems}: any) => {
-    function rowIsCloseToViewable(index: number, distance: number) {
-      for (let i = 0; i < viewableItems.length; i++) {
-        if (Math.abs(index - parseInt(viewableItems[i].index)) <= distance) {
-          return true;
+    try {
+      function rowIsCloseToViewable(index: number, distance: number) {
+        for (let i = 0; i < viewableItems.length; i++) {
+          if (Math.abs(index - parseInt(viewableItems[i].index)) <= distance) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      const rowclone = this.state.rows;
+      const newrows = [];
+      const visibleMonths = [];
+
+      for (let i = 0; i < rowclone.length; i++) {
+        let val: XDate | string = rowclone[i];
+        const rowShouldBeRendered = rowIsCloseToViewable(i, 1);
+
+        if (rowShouldBeRendered && !rowclone[i].getTime) {
+          val = this.state.openDate.clone().addMonths(i - this.props.pastScrollRange, true);
+        } else if (!rowShouldBeRendered) {
+          val = this.state.texts[i];
+        }
+        newrows.push(val);
+        if (rowIsCloseToViewable(i, 0)) {
+          visibleMonths.push(xdateToData(val));
         }
       }
-      return false;
+
+      _.invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
+
+      this.setState({
+        // @ts-ignore
+        rows: newrows,
+        currentMonth: parseDate(visibleMonths[0])
+      });
+    } catch (error) {
+      console.error(error);
     }
-
-    const rowclone = this.state.rows;
-    const newrows = [];
-    const visibleMonths = [];
-
-    for (let i = 0; i < rowclone.length; i++) {
-      let val: XDate | string = rowclone[i];
-      const rowShouldBeRendered = rowIsCloseToViewable(i, 1);
-
-      if (rowShouldBeRendered && !rowclone[i].getTime) {
-        val = this.state.openDate.clone().addMonths(i - this.props.pastScrollRange, true);
-      } else if (!rowShouldBeRendered) {
-        val = this.state.texts[i];
-      }
-      newrows.push(val);
-      if (rowIsCloseToViewable(i, 0)) {
-        visibleMonths.push(xdateToData(val));
-      }
-    }
-
-    _.invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
-
-    this.setState({
-      // @ts-ignore
-      rows: newrows,
-      currentMonth: parseDate(visibleMonths[0])
-    });
   };
 
   renderItem = ({item}: any) => {
