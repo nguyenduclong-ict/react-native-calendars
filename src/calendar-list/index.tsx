@@ -243,7 +243,6 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   };
 
   updateMonth(day: XDate, doNotTriggerListeners = false) {
-    if (!this.state.currentMonth) return;
     if (day.toString('yyyy MM') === this.state.currentMonth.toString('yyyy MM')) {
       return;
     }
@@ -261,45 +260,41 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   }
 
   onViewableItemsChanged = ({viewableItems}: any) => {
-    try {
-      function rowIsCloseToViewable(index: number, distance: number) {
-        for (let i = 0; i < viewableItems.length; i++) {
-          if (Math.abs(index - parseInt(viewableItems[i].index)) <= distance) {
-            return true;
-          }
-        }
-        return false;
-      }
-
-      const rowclone = this.state.rows;
-      const newrows = [];
-      const visibleMonths = [];
-
-      for (let i = 0; i < rowclone.length; i++) {
-        let val: XDate | string = rowclone[i];
-        const rowShouldBeRendered = rowIsCloseToViewable(i, 1);
-
-        if (rowShouldBeRendered && !rowclone[i].getTime) {
-          val = this.state.openDate.clone().addMonths(i - this.props.pastScrollRange, true);
-        } else if (!rowShouldBeRendered) {
-          val = this.state.texts[i];
-        }
-        newrows.push(val);
-        if (rowIsCloseToViewable(i, 0)) {
-          visibleMonths.push(xdateToData(val));
+    function rowIsCloseToViewable(index: number, distance: number) {
+      for (let i = 0; i < viewableItems.length; i++) {
+        if (Math.abs(index - parseInt(viewableItems[i].index)) <= distance) {
+          return true;
         }
       }
-
-      _.invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
-
-      this.setState({
-        // @ts-ignore
-        rows: newrows,
-        currentMonth: parseDate(visibleMonths[0])
-      });
-    } catch (error) {
-      console.error(error);
+      return false;
     }
+
+    const rowclone = this.state.rows;
+    const newrows = [];
+    const visibleMonths = [];
+
+    for (let i = 0; i < rowclone.length; i++) {
+      let val: XDate | string = rowclone[i];
+      const rowShouldBeRendered = rowIsCloseToViewable(i, 1);
+
+      if (rowShouldBeRendered && !rowclone[i].getTime) {
+        val = this.state.openDate.clone().addMonths(i - this.props.pastScrollRange, true);
+      } else if (!rowShouldBeRendered) {
+        val = this.state.texts[i];
+      }
+      newrows.push(val);
+      if (rowIsCloseToViewable(i, 0)) {
+        visibleMonths.push(xdateToData(val));
+      }
+    }
+
+    _.invoke(this.props, 'onVisibleMonthsChange', visibleMonths);
+
+    this.setState({
+      // @ts-ignore
+      rows: newrows,
+      currentMonth: parseDate(visibleMonths[0])
+    });
   };
 
   renderItem = ({item}: any) => {
@@ -319,10 +314,10 @@ class CalendarList extends Component<CalendarListProps, CalendarListState> {
   };
 
   renderStaticHeader() {
-    const {staticHeader, horizontal, headerStyle, renderStaticHeader} = this.props;
+    const {staticHeader, horizontal, headerStyle} = this.props;
     const useStaticHeader = staticHeader && horizontal;
     const headerProps = extractComponentProps(CalendarHeader, this.props);
-    if (renderStaticHeader) return renderStaticHeader(this.state.currentMonth);
+
     if (useStaticHeader) {
       return (
         <CalendarHeader
