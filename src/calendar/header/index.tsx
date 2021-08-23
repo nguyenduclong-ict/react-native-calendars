@@ -4,7 +4,17 @@ import memoize from 'memoize-one';
 import XDate from 'xdate';
 
 import React, {Component, Fragment, ReactNode} from 'react';
-import {ActivityIndicator, Platform, View, Text, TouchableOpacity, Image, ViewStyle, AccessibilityActionEvent, ColorValue} from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ViewStyle,
+  AccessibilityActionEvent,
+  ColorValue
+} from 'react-native';
 // @ts-expect-error
 import {shouldUpdate} from '../../component-updater';
 // @ts-expect-error
@@ -27,6 +37,7 @@ export interface CalendarHeaderProps {
   displayLoadingIndicator?: boolean;
   showWeekNumbers?: boolean;
   month?: XDate;
+  onlyDayNames?: boolean;
   addMonth?: (num: number) => void;
   /** Month format in the title. Formatting values: http://arshaw.com/xdate/#Formatting */
   monthFormat?: string;
@@ -70,6 +81,7 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
     monthFormat: PropTypes.string,
     /**  Hide day names. Default = false */
     hideDayNames: PropTypes.bool,
+    onlyDayNames: PropTypes.bool,
     /** Hide month navigation arrows. Default = false */
     hideArrows: PropTypes.bool,
     /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
@@ -266,14 +278,16 @@ class CalendarHeader extends Component<CalendarHeaderProps> {
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
-        <View style={this.style.header}>
-          {this.renderArrow('left')}
-          <View style={this.style.headerContainer}>
-            {this.renderHeader()}
-            {this.renderIndicator()}
+        {!this.props.onlyDayNames ? (
+          <View style={this.style.header}>
+            {this.renderArrow('left')}
+            <View style={this.style.headerContainer}>
+              {this.renderHeader()}
+              {this.renderIndicator()}
+            </View>
+            {this.renderArrow('right')}
           </View>
-          {this.renderArrow('right')}
-        </View>
+        ) : null}
         {this.renderDayNames()}
       </View>
     );

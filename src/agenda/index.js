@@ -52,7 +52,8 @@ export default class AgendaView extends Component {
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool,
     /** When `true` and `hideKnob` prop is `false`, the knob will always be visible and the user will be able to drag the knob up and close the calendar. Default = false */
-    showClosingKnob: PropTypes.bool
+    showClosingKnob: PropTypes.bool,
+    onReady: PropTypes.any
   };
 
   constructor(props) {

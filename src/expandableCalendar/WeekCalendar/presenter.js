@@ -7,7 +7,7 @@ import {toMarkingFormat} from '../../interface';
 
 const UPDATE_SOURCES = commons.UPDATE_SOURCES;
 // must be a positive number
-const NUMBER_OF_PAGES = 2;
+const NUMBER_OF_PAGES = 100;
 
 class Presenter {
   constructor() {
@@ -65,10 +65,7 @@ class Presenter {
 
   shouldComponentUpdate = (context, prevContext) => {
     const {date, updateSource} = context;
-    return (
-      date !== prevContext.date &&
-      updateSource !== UPDATE_SOURCES.WEEK_SCROLL
-    );
+    return date !== prevContext.date && updateSource !== UPDATE_SOURCES.WEEK_SCROLL;
   };
 
   getDate({current, context, firstDay}, weekIndex) {

@@ -9,7 +9,7 @@ import {AccessibilityInfo, PanResponder, Animated, View, Text, Image} from 'reac
 import {CALENDAR_KNOB} from '../testIDs';
 import dateutils from '../dateutils';
 import {parseDate, toMarkingFormat} from '../interface';
-import styleConstructor, {HEADER_HEIGHT} from './style';
+import styleConstructor from './style';
 import CalendarList from '../calendar-list';
 import Calendar from '../calendar';
 import asCalendarConsumer from './asCalendarConsumer';
@@ -24,11 +24,12 @@ const POSITIONS = {
 };
 const SPEED = 20;
 const BOUNCINESS = 6;
-const CLOSED_HEIGHT = 120; // header + 1 week
+const CLOSED_HEIGHT = 86; // header + 1 week
 const WEEK_HEIGHT = 46;
 const KNOB_CONTAINER_HEIGHT = 20;
 const DAY_NAMES_PADDING = 24;
 const PAN_GESTURE_THRESHOLD = 30;
+const HEADER_HEIGHT = 68;
 
 /**
  * @description: Expandable calendar component
@@ -37,8 +38,8 @@ const PAN_GESTURE_THRESHOLD = 30;
  * @extendslink: docs/CalendarList
  * @example: https://github.com/wix/react-native-calendars/blob/master/example/src/screens/expandableCalendar.js
  */
-class ExpandableCalendar extends Component {
-  static displayName = 'ExpandableCalendar';
+class ExpandableCalendar2 extends Component {
+  static displayName = 'ExpandableCalendar2';
 
   static propTypes = {
     ...CalendarList.propTypes,
@@ -170,7 +171,6 @@ class ExpandableCalendar extends Component {
   scrollPage(next) {
     if (this.props.horizontal) {
       const d = parseDate(this.props.context.date);
-
       if (this.state.position === POSITIONS.OPEN) {
         d.setDate(1);
         d.addMonths(next ? 1 : -1);
@@ -346,12 +346,14 @@ class ExpandableCalendar extends Component {
     // {year: 2019, month: 4, day: 22, timestamp: 1555977600000, dateString: "2019-04-23"}
     _.invoke(this.props.context, 'setDate', value.dateString, UPDATE_SOURCES.DAY_PRESS);
 
-    setTimeout(() => {
-      // to allows setDate to be completed
-      if (this.state.position === POSITIONS.OPEN) {
-        this.bounceToPosition(this.closedHeight);
-      }
-    }, 0);
+    // Disable in close on press day
+
+    // setTimeout(() => {
+    //   // to allows setDate to be completed
+    //   if (this.state.position === POSITIONS.OPEN) {
+    //     this.bounceToPosition(this.closedHeight);
+    //   }
+    // }, 0);
   };
 
   onVisibleMonthsChange = value => {
@@ -430,7 +432,11 @@ class ExpandableCalendar extends Component {
     return (
       <Animated.View
         ref={e => (this.weekCalendar = e)}
-        style={[this.style.weekContainer, position === POSITIONS.OPEN ? this.style.hidden : this.style.visible]}
+        style={[
+          this.style.weekContainer,
+          position === POSITIONS.OPEN ? this.style.hidden : this.style.visible,
+          {top: 32}
+        ]}
         pointerEvents={position === POSITIONS.CLOSED ? 'auto' : 'none'}
       >
         <WeekComponent
@@ -516,4 +522,4 @@ class ExpandableCalendar extends Component {
   }
 }
 
-export default asCalendarConsumer(ExpandableCalendar);
+export default asCalendarConsumer(ExpandableCalendar2);
