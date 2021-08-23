@@ -30,6 +30,7 @@ class CalendarHeader extends Component {
     monthFormat: PropTypes.string,
     /**  Hide day names. Default = false */
     hideDayNames: PropTypes.bool,
+    onlyDayNames: PropTypes.bool,
     /** Hide month navigation arrows. Default = false */
     hideArrows: PropTypes.bool,
     /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
@@ -198,14 +199,16 @@ class CalendarHeader extends Component {
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
-        <View style={this.style.header}>
-          {this.renderArrow('left')}
-          <View style={this.style.headerContainer}>
-            {this.renderHeader()}
-            {this.renderIndicator()}
+        {!this.props.onlyDayNames ? (
+          <View style={this.style.header}>
+            {this.renderArrow('left')}
+            <View style={this.style.headerContainer}>
+              {this.renderHeader()}
+              {this.renderIndicator()}
+            </View>
+            {this.renderArrow('right')}
           </View>
-          {this.renderArrow('right')}
-        </View>
+        ) : null}
         {this.renderDayNames()}
       </View>
     );

@@ -10,6 +10,7 @@ export interface CalendarHeaderProps {
     displayLoadingIndicator?: boolean;
     showWeekNumbers?: boolean;
     month?: XDate;
+    onlyDayNames?: boolean;
     addMonth?: (num: number) => void;
     /** Month format in the title. Formatting values: http://arshaw.com/xdate/#Formatting */
     monthFormat?: string;
@@ -51,6 +52,7 @@ declare class CalendarHeader extends Component<CalendarHeaderProps> {
         monthFormat: PropTypes.Requireable<string>;
         /**  Hide day names. Default = false */
         hideDayNames: PropTypes.Requireable<boolean>;
+        onlyDayNames: PropTypes.Requireable<boolean>;
         /** Hide month navigation arrows. Default = false */
         hideArrows: PropTypes.Requireable<boolean>;
         /** Replace default arrows with custom ones (direction can be 'left' or 'right') */
