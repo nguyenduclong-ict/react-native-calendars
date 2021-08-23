@@ -171,22 +171,22 @@ class ExpandableCalendar2 extends Component {
 
   // eslint-disable-next-line no-unused-vars
   scrollPage(next) {
-    // if (this.props.horizontal) {
-    //   const d = parseDate(this.props.context.date);
-    //   if (this.state.position === POSITIONS.OPEN) {
-    //     d.setDate(1);
-    //     d.addMonths(next ? 1 : -1);
-    //   } else {
-    //     const {firstDay} = this.props;
-    //     let dayOfTheWeek = d.getDay();
-    //     if (dayOfTheWeek < firstDay && firstDay > 0) {
-    //       dayOfTheWeek = 7 + dayOfTheWeek;
-    //     }
-    //     const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
-    //     d.addDays(firstDayOfWeek);
-    //   }
-    //   _.invoke(this.props.context, 'setDate', toMarkingFormat(d), UPDATE_SOURCES.PAGE_SCROLL);
-    // }
+    if (this.props.horizontal) {
+      const d = parseDate(this.props.context.date);
+      if (this.state.position === POSITIONS.OPEN) {
+        d.setDate(1);
+        d.addMonths(next ? 1 : -1);
+      } else {
+        const {firstDay} = this.props;
+        let dayOfTheWeek = d.getDay();
+        if (dayOfTheWeek < firstDay && firstDay > 0) {
+          dayOfTheWeek = 7 + dayOfTheWeek;
+        }
+        const firstDayOfWeek = (next ? 7 : -7) - dayOfTheWeek + firstDay;
+        d.addDays(firstDayOfWeek);
+      }
+      _.invoke(this.props.context, 'setDate', toMarkingFormat(d), UPDATE_SOURCES.PAGE_SCROLL);
+    }
   }
 
   /** Utils */
